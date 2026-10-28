@@ -47,7 +47,7 @@ def test_incoming_message_saved_and_auto_replied(client, fake_meta):
     assert len(msgs) == 2
     reply, incoming = msgs  # newest first
     assert incoming["direction"] == "incoming" and incoming["body"] == "What is the PRICE?"
-    assert reply["direction"] == "outgoing" and "₹499" in reply["body"]
+    assert reply["direction"] == "outgoing" and reply["body"].startswith("Please tell us")
     assert reply["status"] == "sent" and reply["wamid"] == "wamid.out1"
 
     sent = fake_meta.calls[0]

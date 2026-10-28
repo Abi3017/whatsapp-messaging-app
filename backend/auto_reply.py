@@ -3,16 +3,21 @@
 To add a keyword, add one entry to KEYWORD_REPLIES. Matching is case-insensitive
 and checks whole words, so "price" matches "What's the price?" but "hi" does
 not match "this".
+
+Rules are checked top to bottom and the first match wins. The greeting is last,
+so "hi, what is the price?" gets the price answer instead of a greeting.
 """
 import re
 
 KEYWORD_REPLIES = [
-    (("hi", "hello", "hey"),
-     "Hello! 👋 Thanks for messaging us. Reply *price* for our pricing or *hours* for our opening hours."),
     (("price", "prices", "pricing", "cost"),
-     "Our plans start at ₹499/month. Reply *hours* to know when you can reach us."),
+     "Please tell us which product or service you are interested in."),
     (("hours", "timing", "timings", "open"),
-     "We're open Monday to Saturday, 9:00 AM to 7:00 PM IST."),
+     "Our business hours are 9 AM to 6 PM."),
+    (("information", "info", "details", "enquiry", "inquiry"),
+     "Thank you for contacting us. Could you please share more details about your enquiry?"),
+    (("hi", "hello", "hey"),
+     "Hello! Welcome. How can we help you?"),
 ]
 
 FALLBACK_REPLY = (

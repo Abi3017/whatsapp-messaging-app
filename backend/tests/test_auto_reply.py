@@ -1,14 +1,25 @@
+import pytest
+
 from auto_reply import FALLBACK_REPLY, get_reply
 
+HI = "Hello! Welcome. How can we help you?"
+PRICE = "Please tell us which product or service you are interested in."
+HOURS = "Our business hours are 9 AM to 6 PM."
+INFO = "Thank you for contacting us. Could you please share more details about your enquiry?"
 
-def test_keywords_case_insensitive_and_in_sentences():
-    assert "Hello" in get_reply("HI there")
-    assert "₹499" in get_reply("what's the price?")
-    assert "9:00 AM" in get_reply("Are you open today")
+
+@pytest.mark.parametrize("message, expected", [
+    ("Hi", HI), ("hi", HI), ("HI", HI), ("hello there", HI),
+    ("Price", PRICE), ("price", PRICE), ("What is the price?", PRICE),
+    ("Hours", HOURS), ("hours", HOURS), ("business hours", HOURS),
+    ("I need some information", INFO), ("Can I get more info?", INFO),
+    ("hi, what is the price?", PRICE),
+])
+def test_customer_script(message, expected):
+    assert get_reply(message) == expected
 
 
 def test_whole_word_match_only():
-    # "this" contains "hi" but must not trigger the greeting
     assert get_reply("this is something") == FALLBACK_REPLY
 
 
