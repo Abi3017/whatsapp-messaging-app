@@ -1,0 +1,27 @@
+# Render Blueprint: one free web service that builds the React app
+# and serves it from Flask, together with the API and webhook.
+services:
+  - type: web
+    name: whatsapp-messaging-app
+    runtime: python
+    plan: free
+    buildCommand: cd frontend && npm ci && npm run build && cd ../backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn -w 2 -b 0.0.0.0:$PORT app:app
+    healthCheckPath: /api/health
+    envVars:
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_BUSINESS_ACCOUNT_ID
+        sync: false
+      - key: WEBHOOK_VERIFY_TOKEN
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: GRAPH_API_VERSION
+        value: v23.0
+      - key: PYTHON_VERSION
+        value: 3.12.8
